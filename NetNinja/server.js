@@ -3,14 +3,14 @@ const fs = require('fs');
 const _ = require('lodash');
 
 const server = http.createServer((req, res) => {
-    
+
     const num = _.random(1, 6);
     console.log(num)
 
     res.setHeader('Content-type', 'text/html');
     let path = './Views/';
 
-    switch(req.url) {
+    switch (req.url) {
         case '/':
             path += 'index.html';
             res.statusCode = 200;
@@ -26,14 +26,15 @@ const server = http.createServer((req, res) => {
         default:
             path += '404.html';
             res.statusCode = 404;
-            break; 
+            break;
     }
 
     fs.readFile(path, (error, data) => {
-        if(error) {
+        if (error) {
             console.log(error);
             res.end();
-        } else {;
+        } else {
+            ;
             res.end(data);
         }
     });
