@@ -9,11 +9,11 @@ app.set('view engine', 'ejs')
 app.listen(3000);
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views', 'index.html'));
+    res.render('index')
 });
 
 app.get('/about', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views', 'about.html'));
+    res.render('about')
 });
 
 app.get('/about-me', (req, res) => {
@@ -21,5 +21,5 @@ app.get('/about-me', (req, res) => {
 });
 
 app.use((req, res) => {
-    res.status(404).sendFile(path.join(__dirname, 'views', '404.html'))
+    res.status(404).render('404')
 })
