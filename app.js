@@ -9,7 +9,12 @@ app.set('view engine', 'ejs')
 app.listen(3000);
 
 app.get('/', (req, res) => {
-    res.render('index')
+    const blogs = [
+        {title: 'Kelia finds Ruth', snippet: 'Lorem ipsum hi'},
+        {title: 'Kelia finds Ruzibiza', snippet: 'Lorem ipsum hi'},
+        {title: 'Kelia finds Iradukunda', snippet: 'Lorem ipsum hi'},
+    ]
+    res.render('index', { title: 'Home'})
 });
 
 app.get('/about', (req, res) => {
