@@ -1,17 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document | <%= title %></title>
-</head>
+<%- include('./partials/head.ejs') %>
 <body>
     <h2>Home of ninjas</h2>
-    <nav>
-        <a href="/">Home page</a>
-        <a href="/about">About page</a>
-        <a href="/blogs/create">New blog</a>
-    </nav>
+    <%- include('./partials/nav.ejs') %>
+
     <h3>All blogs</h3>
 
     <% if(blogs.length > 0) { %>
@@ -22,5 +15,6 @@
     <% } else { %>
         <p>There are no blogs to display...</p>
     <% } %>
+    <%- include('./partials/footer.ejs') %>
 </body>
 </html>
