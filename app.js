@@ -1,30 +1,33 @@
 const express = require('express');
-const path = require('path');
-const app = express();
 
-// Use ejs as our view engine
-app.set('view engine', 'ejs')
+// express app
+const app = express();
 
 // listen for requests
 app.listen(3000);
 
+// register view engine
+app.set('view engine', 'ejs');
+// app.set('views', 'myviews');
+
 app.get('/', (req, res) => {
-    const blogs = [
-        {title: 'Kelia finds Ruth', snippet: 'Lorem ipsum hi'},
-        {title: 'Kelia finds Ruzibiza', snippet: 'Lorem ipsum hi'},
-        {title: 'Kelia finds Iradukunda', snippet: 'Lorem ipsum hi'},
-    ]
-    res.render('index', { title: 'Home', blogs})
+  const blogs = [
+    {title: 'Yoshi finds eggs', snippet: 'Lorem ipsum dolor sit amet consectetur'},
+    {title: 'Mario finds stars', snippet: 'Lorem ipsum dolor sit amet consectetur'},
+    {title: 'How to defeat bowser', snippet: 'Lorem ipsum dolor sit amet consectetur'},
+  ];
+  res.render('index', { title: 'Home', blogs });
 });
 
 app.get('/about', (req, res) => {
-    res.render('about', { title: 'About' })
+  res.render('about', { title: 'About' });
 });
 
-app.get('/about-me', (req, res) => {
-    res.redirect('/about');
+app.get('/blogs/create', (req, res) => {
+  res.render('create', { title: 'Create a new blog' });
 });
 
+// 404 page
 app.use((req, res) => {
-    res.status(404).render('404', { title: '404' })
-})
+  res.status(404).render('404', { title: '404' });
+});
