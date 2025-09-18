@@ -1,4 +1,5 @@
 const express = require('express');
+const morgan = require('morgan')
 
 // express app
 const app = express();
@@ -9,6 +10,9 @@ app.listen(3000);
 // register view engine
 app.set('view engine', 'ejs');
 // app.set('views', 'myviews');
+
+// Use middleware
+app.use(morgan('tiny'))
 
 app.get('/', (req, res) => {
   const blogs = [
