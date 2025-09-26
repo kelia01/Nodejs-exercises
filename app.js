@@ -8,15 +8,9 @@ const app = express();
 
 //conect to the database
 const dbURI = 'mongodb+srv://node1user:test123@node1user.gwravvd.mongodb.net/?retryWrites=true&w=majority&appName=nodetuts';
-mongoose.connect(dbURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(res => console.log('connected to the db'))
+mongoose.connect(dbURI)
+.then(res => app.listen(3000))
 .catch(err => console.log(err))
-
-// listen for requests
-app.listen(3000);
 
 // register view engine
 app.set('view engine', 'ejs');
@@ -26,27 +20,15 @@ app.set('view engine', 'ejs');
 app.use(morgan('dev'));
 //static files and middleware
 app.use(express.static('public'));
+app.use(express.urlencoded({extended: true}))
 
-app.get('/add-blog', (req,res) => {
-  const blog = new Blog({
-    title: 'New blog',
-    snippet: 'HI Hi'
-  });
-
-  blog.save()
-  .then((result) => {
-    res.send(result)
-  })
-  .catch(err => console.error(err))
-})
+app.use((req, res, next) => {
+  res.locals.path = req.path;
+  next();
+});
 
 app.get('/', (req, res) => {
-  const blogs = [
-    {title: 'Yoshi finds eggs', snippet: 'Lorem ipsum dolor sit amet consectetur'},
-    {title: 'Mario finds stars', snippet: 'Lorem ipsum dolor sit amet consectetur'},
-    {title: 'How to defeat bowser', snippet: 'Lorem ipsum dolor sit amet consectetur'},
-  ];
-  res.render('index', { title: 'Home', blogs });
+  res.redirect('/blogs')
 });
 
 app.get('/about', (req, res) => {
@@ -57,6 +39,31 @@ app.get('/blogs/create', (req, res) => {
   res.render('create', { title: 'Create a new blog' });
 });
 
+app.get('/blogs', (req, res) => {
+  Blog.find()
+  .then(result => {
+    res.render('index', {title: 'All blogs', blogs: result})
+  })
+  .catch(err => console.log(err))
+})
+
+app.post('/blogs', (req, res) => {
+  const blog = new Blog(req.body);
+  blog.save()
+  .then(result  => {
+    res.redirect('/blogs')
+  })
+  .catch(err => console.error(err))
+})
+
+app.get('/blogs/:id', (req, res) => {
+  const id = req.params.id;
+  Blog.findById(id)
+  .then(result => {
+    render('details', {blog: result, title: 'Blog detail'})
+  })
+  .catch(err => console.error())
+})
 // 404 page
 app.use((req, res) => {
   res.status(404).render('404', { title: '404' });

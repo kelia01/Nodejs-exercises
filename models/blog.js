@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
-const Schema = require('Schema');
 
-const blogSchema = new Schema({
+const blogSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
@@ -17,4 +16,4 @@ const blogSchema = new Schema({
 }, { timestamp: true });
 
 const Blog = mongoose.model('Blog', blogSchema);
-module.exports(Blog)
+module.exports = Blog
