@@ -1,8 +1,19 @@
 const express = require('express');
-const morgan = require('morgan')
+const morgan = require('morgan');
+const mongoose = require('mongoose');
+const Blog = require('./models/blog')
 
 // express app
 const app = express();
+
+//conect to the database
+const dbURI = 'mongodb+srv://node1user:test123@node1user.gwravvd.mongodb.net/?retryWrites=true&w=majority&appName=nodetuts';
+mongoose.connect(dbURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(res => console.log('connected to the db'))
+.catch(err => console.log(err))
 
 // listen for requests
 app.listen(3000);
@@ -12,9 +23,22 @@ app.set('view engine', 'ejs');
 // app.set('views', 'myviews');
 
 // Use middleware
-app.use(morgan('tiny'))
+app.use(morgan('dev'));
 //static files and middleware
-app.use(express.static('public'))
+app.use(express.static('public'));
+
+app.get('/add-blog', (req,res) => {
+  const blog = new Blog({
+    title: 'New blog',
+    snippet: 'HI Hi'
+  });
+
+  blog.save()
+  .then((result) => {
+    res.send(result)
+  })
+  .catch(err => console.error(err))
+})
 
 app.get('/', (req, res) => {
   const blogs = [
