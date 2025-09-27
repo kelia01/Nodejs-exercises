@@ -40,7 +40,7 @@ app.get('/blogs/create', (req, res) => {
 });
 
 app.get('/blogs', (req, res) => {
-  Blog.find()
+  Blog.find().sort({ createdAt: -1 })
   .then(result => {
     res.render('index', {title: 'All blogs', blogs: result})
   })
@@ -60,9 +60,17 @@ app.get('/blogs/:id', (req, res) => {
   const id = req.params.id;
   Blog.findById(id)
   .then(result => {
-    render('details', {blog: result, title: 'Blog detail'})
+    res.render('details', {blog: result, title: 'Blog detail'})
   })
   .catch(err => console.error())
+})
+
+app.delete('/blogs/:id', (req, res) => {
+  const id = req.params.id;
+
+  Blog.findByIdAndDelete(id)
+  .then(result => res.json({ redirect: '/blogs'}))
+  .catch(err => console.log(err))
 })
 // 404 page
 app.use((req, res) => {
